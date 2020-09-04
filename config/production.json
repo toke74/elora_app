@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://elora123:test12345@elora.th4jf.mongodb.net/eloradb?retryWrites=true&w=majority",
+  "jwtSecret": "elorasecretpass"
+}
