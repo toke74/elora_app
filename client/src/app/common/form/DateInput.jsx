@@ -1,5 +1,4 @@
 import React from 'react';
-import { Form, Label } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -13,7 +12,7 @@ const DateInput = ({
   ...rest
 }) => {
   return (
-    <Form.Field error={touched && !!error}>
+    <div>
       <DatePicker
         {...rest}
         placeholderText={placeholder}
@@ -24,13 +23,8 @@ const DateInput = ({
         onChangeRaw={(e) => e.preventDefault()}
       />
 
-      {touched &&
-      error && (
-        <Label basic color="red">
-          {error}
-        </Label>
-      )}
-    </Form.Field>
+      {touched && error && <label color="red">{error}</label>}
+    </div>
   );
 };
 

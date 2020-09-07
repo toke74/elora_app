@@ -8,6 +8,7 @@ import {
 import api from '../../app/common/util/api';
 // import { reset } from 'redux-form';
 import setAuthToken from '../../app/common/util/setAuthToken';
+import { reset } from 'redux-form';
 
 // Load User
 export const loadUser = () => async (dispatch) => {
@@ -76,4 +77,25 @@ export const login = (values, history) => async (dispatch) => {
 export const logout = (history) => (dispatch) => {
   dispatch({ type: LOGOUT });
   history.push('/login');
+};
+
+// Change User password
+export const changePassword = (values) => async (dispatch) => {
+  try {
+    const res = await api.post('/users/change-password', values);
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
+    dispatch(reset('account'));
+  } catch (err) {
+    if (err.response) {
+      const errors = err.response.data.errors;
+      dispatch({
+        type: AUTH_ERROR,
+        payload: err.response.data.errors,
+      });
+      dispatch(reset('account'));
+    }
+  }
 };

@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     textAlign: 'center',
-    fontFamily: "'Italianno', cursive",
-    fontSize: '2.6rem',
+    fontFamily: "'Times New Roman', Times, serif",
+    fontSize: '1.3rem',
     fontWeight: 400,
   },
   loginBtn: {
@@ -51,7 +51,12 @@ const Login = ({ handleSubmit, history }) => {
   const errors = useSelector((state) => state.auth.errors);
 
   const onSubmitHandle = (values) => {
-    dispatch(login(values, history));
+    const email = values.email.toLowerCase();
+    const value = {
+      email,
+      password: values.password,
+    };
+    dispatch(login(value, history));
   };
 
   return (

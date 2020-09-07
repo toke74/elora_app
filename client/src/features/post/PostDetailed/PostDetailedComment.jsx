@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     textAlign: 'center',
-    backgroundColor: '#00bcd4',
+    backgroundColor: '#2bbbff',
+    // backgroundColor: '#00bcd4',
     paddingBottom: theme.spacing(1),
     paddingTop: theme.spacing(1),
     color: '#fff',
@@ -229,11 +230,21 @@ const PostDetailedComment = ({
                         <CardContent className={classes.body}>
                           {secondChild.text}
                         </CardContent>
-                        {/* <CardActions className={classes.replyAction}>
-                          <Button className={classes.replyBtn} size="small">
-                            Reply
-                          </Button>
-                        </CardActions> */}
+                        <CardActions className={classes.replyAction}>
+                          {user &&
+                          user._id === secondChild.user._id && (
+                            <Button
+                              onClick={() =>
+                                dispatch(
+                                  deleteComment(secondChild._id, post._id)
+                                )}
+                              style={{ textTransform: 'capitalize' }}
+                              color="secondary"
+                            >
+                              Delete
+                            </Button>
+                          )}
+                        </CardActions>
                       </CardContent>
                     ))}
                 </CardContent>

@@ -6,7 +6,6 @@ import {
   GET_NOTIFICATIONS,
   MARK_NOTIFICATION_READ,
 } from './userConstants';
-import { toastr } from 'react-redux-toastr';
 import api from '../../app/common/util/api';
 import { loadUser } from '../auth/authActions';
 
@@ -20,7 +19,7 @@ export const getUserProfileById = (id) => async (dispatch) => {
     });
   } catch (err) {
     if (err.response) {
-      toastr.error(`${err.response}`);
+      console.log(err.response);
     }
   }
 };
@@ -34,7 +33,7 @@ export const getAllProfile = () => async (dispatch) => {
     });
   } catch (err) {
     if (err.response) {
-      toastr.error(`${err.response}`);
+      console.log(err.response);
     }
   }
 };
@@ -47,21 +46,20 @@ export const createProfile = (values) => async (dispatch) => {
       type: CREATE_PROFILE,
       payload: res.data,
     });
-    toastr.success('Profile updated Successfully');
+
     if (res.data) {
       dispatch(getUserProfileById(res.data.user));
     }
     dispatch(loadUser());
   } catch (err) {
     if (err.response) {
-      toastr.error(`${err.response.data.msg}`);
+      console.log(err.response.data.msg);
     }
   }
 };
 
 // Follow  user
 export const followUser = (id) => async (dispatch) => {
-  console.log(id);
   try {
     const res = await api.put(`/profile/follow/${id}`);
 
@@ -74,7 +72,6 @@ export const followUser = (id) => async (dispatch) => {
   } catch (err) {
     if (err.response) {
       console.log(err.response);
-      toastr.error(`${err.response.statusText}`);
     }
   }
 };
@@ -93,8 +90,8 @@ export const unfollowUser = (id) => async (dispatch) => {
     dispatch(getAllProfile());
   } catch (err) {
     if (err.response) {
-      console.log(err.response);
-      toastr.error(`${err.response.statusText}`);
+      // console.log(err.response);
+      console.log(err.response.data.msg);
     }
   }
 };
@@ -108,12 +105,10 @@ export const updateUserAvatar = (avatar) => async (dispatch) => {
         avatar,
       })
     );
-
-    toastr.success('Profile Image updated Successfully');
     dispatch(loadUser());
   } catch (err) {
     if (err.response) {
-      toastr.error(`${err.response.data.msg}`);
+      console.log(err.response.data.msg);
     }
   }
 };
@@ -128,11 +123,10 @@ export const setMainPhoto = (avatar) => async (dispatch) => {
       })
     );
 
-    toastr.success('Profile Image updated setup');
     dispatch(loadUser());
   } catch (err) {
     if (err.response) {
-      toastr.error(`${err.response.data.msg}`);
+      console.log(err.response.data.msg);
     }
   }
 };
@@ -146,11 +140,10 @@ export const deletePhoto = (avatar) => async (dispatch) => {
         avatar,
       })
     );
-    toastr.success('Photo seccussfully  deleted');
     dispatch(loadUser());
   } catch (err) {
     if (err.response) {
-      toastr.error(`${err.response.data.msg}`);
+      console.log(err.response.data.msg);
     }
   }
 };
@@ -165,7 +158,7 @@ export const getNotifications = () => async (dispatch) => {
     });
   } catch (err) {
     if (err.response) {
-      toastr.error(`${err.response}`);
+      console.log(err.response);
     }
   }
 };
@@ -179,7 +172,7 @@ export const markNotificationsRead = (notificationIds) => async (dispatch) => {
     dispatch(getNotifications());
   } catch (err) {
     if (err.response) {
-      toastr.error(`${err.response}`);
+      console.log(err.response);
     }
   }
 };

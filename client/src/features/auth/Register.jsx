@@ -1,10 +1,10 @@
 import React from 'react';
-import {Field, reduxForm} from 'redux-form';
-import {useDispatch, useSelector} from 'react-redux';
+import { Field, reduxForm } from 'redux-form';
+import { useDispatch, useSelector } from 'react-redux';
 
 //MUI stuff
-import {makeStyles} from '@material-ui/core/styles';
-import {Button, Typography, Grid} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Button, Typography, Grid } from '@material-ui/core';
 
 //revalidate stuff
 import {
@@ -17,43 +17,43 @@ import {
 
 //local stuff
 import TextInput from '../../app/common/form/TextInput';
-import {register} from './authActions';
+import { register } from './authActions';
 
-const isValidEmail = createValidator (
-  message => value => {
-    if (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test (value)) {
+const isValidEmail = createValidator(
+  (message) => (value) => {
+    if (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
       return message;
     }
   },
   'Invalid email address'
 );
-const validate = combineValidators ({
-  firstName: isRequired ('First Name'),
-  lastName: isRequired ('Last Name'),
-  email: composeValidators (isRequired ('Email'), isValidEmail) (),
-  password: isRequired ('Password'),
-  confirmPassword: composeValidators (
-    isRequired ('Confirm Password'),
-    matchesField ('password') ({
+const validate = combineValidators({
+  firstName: isRequired('First Name'),
+  lastName: isRequired('Last Name'),
+  email: composeValidators(isRequired('Email'), isValidEmail)(),
+  password: isRequired('Password'),
+  confirmPassword: composeValidators(
+    isRequired('Confirm Password'),
+    matchesField('password')({
       message: 'Passwords do not match',
     })
-  ) (),
+  )(),
 });
 
-const useStyles = makeStyles (theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    marginTop: theme.spacing (7),
+    marginTop: theme.spacing(7),
   },
   title: {
     textAlign: 'center',
-    fontFamily: "'Italianno', cursive",
-    fontSize: '2.6rem',
+    fontFamily: "'Times New Roman', Times, serif",
+    fontSize: '1.3rem',
     fontWeight: 400,
   },
   registerBtn: {
-    marginTop: theme.spacing (3),
+    marginTop: theme.spacing(3),
   },
   errors: {
     color: '#db2828',
@@ -61,20 +61,29 @@ const useStyles = makeStyles (theme => ({
   },
 }));
 
-const Register = ({handleSubmit, history}) => {
-  const dispatch = useDispatch ();
-  const classes = useStyles ();
-  const errors = useSelector (state => state.auth.errors);
+const Register = ({ handleSubmit, history }) => {
+  const dispatch = useDispatch();
+  const classes = useStyles();
+  const errors = useSelector((state) => state.auth.errors);
 
-  const onSubmitHandle = values => {
-    dispatch (register (values, history));
+  const onSubmitHandle = (values) => {
+    const email = values.email.toLowerCase();
+    const value = {
+      email,
+      firstName: values.firstName,
+      lastName: values.lastName,
+      password: values.password,
+      confirmPassword: values.confirmPassword,
+    };
+    console.log(value);
+    dispatch(register(value, history));
   };
   return (
     <Grid className={classes.root} container justify="center">
       <Grid item xs={1} md={4} />
       <Grid item xs={10} md={4}>
         <Typography className={classes.title}>Register to Elora</Typography>
-        <form onSubmit={handleSubmit (onSubmitHandle)} autoComplete="off">
+        <form onSubmit={handleSubmit(onSubmitHandle)} autoComplete="off">
           <div>
             <Field
               id="firstName"
@@ -124,7 +133,7 @@ const Register = ({handleSubmit, history}) => {
             />
           </div>
           {errors &&
-            errors.map ((error, index) => (
+            errors.map((error, index) => (
               <div key={index} className={classes.errors}>
                 {error.msg}
               </div>
@@ -144,7 +153,7 @@ const Register = ({handleSubmit, history}) => {
     </Grid>
   );
 };
-export default reduxForm ({
+export default reduxForm({
   form: 'register',
   validate,
-}) (Register);
+})(Register);

@@ -41,7 +41,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   userName: {
-    color: '#00bcd4',
+    color: '#2bbbff',
+    // color: '#00bcd4',
     textDecoration: 'none',
     fontSize: '1.1rem',
     fontFamily: 'Times New Roman',

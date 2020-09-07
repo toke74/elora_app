@@ -11,3 +11,31 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.react-datepicker-wrapper,
+.react-datepicker__input-container,
+.react-datepicker__input-container input {
+  display: block;
+  border:'none' !important;
+  width: 100%;
+}
+
+.dropzone {
+  border: dashed 3px #eee;
+  border-radius: 5px;
+  padding-top: 30px;
+  text-align: center;
+  width:60%;
+  margin-bottom:20px;
+  /* min-height: 236px; */
+}
+
+.dropzone--isActive {
+  border: dashed 3px green;
+}
+
+.images > img{
+   height: 160px;
+    width: 200px;
+}
