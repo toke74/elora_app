@@ -1,9 +1,7 @@
 import React, { Fragment } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import moment from 'moment';
 
 //MUI stuff
 import { makeStyles } from '@material-ui/core/styles';

@@ -5,11 +5,10 @@ import { combineValidators, isRequired } from 'revalidate';
 //MUI stuff
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import EditIcon from '@material-ui/icons/Edit';
 import ReplyIcon from '@material-ui/icons/Reply';
+
 //local stuff
 import TextArea from '../../../app/common/form/TextArea';
-import { TextField } from '@material-ui/core';
 
 const validate = combineValidators({
   text: isRequired({ message: 'Please enter a Comment' }),

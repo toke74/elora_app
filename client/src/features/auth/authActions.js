@@ -90,7 +90,6 @@ export const changePassword = (values) => async (dispatch) => {
     dispatch(reset('account'));
   } catch (err) {
     if (err.response) {
-      const errors = err.response.data.errors;
       dispatch({
         type: AUTH_ERROR,
         payload: err.response.data.errors,

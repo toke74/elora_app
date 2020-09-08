@@ -1,24 +1,22 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import StickyBox from 'react-sticky-box';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+
 //MUI stuff
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import ProfileHeader from './ProfileHeader';
+import ProfileInfo from './ProfileInfo';
 
-//local stuff
+//Local stuff
+import { getUserProfileById, followUser, unfollowUser } from '../userActions';
 import Spinner from '../../../app/layout/Spinner';
-import PostDetailedInfo from './PostDetailedInfo';
-// import PostDetailedHeader from './PostDetailedHeader';
-import PostDetailedComment from './PostDetailedComment';
-import { getPost, createComment, deleteComment } from '../postActions';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    fontFamily: "'Times New Roman', Times, serif",
-    lineHeight: 1.6,
   },
   paper: {
     padding: theme.spacing(2),
@@ -33,72 +31,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const PostDetailedPage = () => {
+const ProfilePage = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const { profile, loading } = useSelector((state) => state.profiles);
+  const user = useSelector((state) => state.auth.user);
   let { id } = useParams();
+
+  const paramsId = id;
 
   useEffect(
     () => {
-      dispatch(getPost(id));
+      dispatch(getUserProfileById(id));
     },
     [dispatch, id]
   );
 
-  const posts = useSelector((state) => state.posts);
-  const user = useSelector((state) => state.auth.user);
-
-  const { post, loading } = posts;
-  const likes = post && post.like;
-
-  let disliked = false;
-  let liked = false;
-
-  likes &&
-    user &&
-    post &&
-    likes.map((like) => {
-      if (
-        user._id === like.user &&
-        like.like === true &&
-        like.postId === post._id
-      ) {
-        liked = true;
-      }
-      if (
-        user._id === like.user &&
-        like.dislike === true &&
-        like.postId === post._id
-      ) {
-        disliked = true;
-      }
-      return null;
-    });
-
-  return loading || post === null ? (
+  return loading || profile === null ? (
     <Spinner />
   ) : (
-    <div className={classes.root}>
+    <div>
       <Grid container spacing={3}>
         <Grid item xs={1} md={1} />
         <Grid item xs={10} md={6}>
-          {/* <PostDetailedHeader /> */}
-          <PostDetailedInfo
-            post={post}
-            comments={post.comments}
-            disliked={disliked}
-            liked={liked}
+          <ProfileHeader
+            profile={profile}
             user={user}
             dispatch={dispatch}
+            paramsId={paramsId}
+            followUser={followUser}
+            unfollowUser={unfollowUser}
           />
-          <PostDetailedComment
-            comments={post.comments}
-            post={post}
-            user={user}
-            createComment={createComment}
-            deleteComment={deleteComment}
-            dispatch={dispatch}
-          />
+          <ProfileInfo profile={profile} user={user} paramsId={paramsId} />
         </Grid>
         <Grid className={classes.sideBar} item md={4}>
           <StickyBox offsetTop={80} offsetBottom={40}>
@@ -121,4 +86,5 @@ const PostDetailedPage = () => {
     </div>
   );
 };
-export default PostDetailedPage;
+
+export default ProfilePage;

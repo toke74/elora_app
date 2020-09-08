@@ -14,7 +14,6 @@ import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 //local stuff
 import { logout } from '../../../auth/authActions';
 import { openModal } from '../../../../app/modals/modalActions';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   desktopMenu: {

@@ -83,7 +83,11 @@ const ProfilePhotos = () => {
           <p>Step 2- Preview & Upload</p>
           {files.length > 0 && (
             <Fragment>
-              <img src={files[0].preview} className={classes.imgPreview} />
+              <img
+                src={files[0].preview}
+                className={classes.imgPreview}
+                alt="preview"
+              />
               <ButtonGroup
                 variant="text"
                 color="primary"
