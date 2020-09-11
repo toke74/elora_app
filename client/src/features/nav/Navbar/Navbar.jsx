@@ -115,7 +115,7 @@ const Navbar = () => {
             style={{ marginLeft: '15px' }}
             className={classes.proffileBtn}
             component={Link}
-            to="/post-form"
+            to="/profiles"
           >
             Profiles
           </Button>

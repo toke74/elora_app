@@ -37,11 +37,10 @@ router.get('/:id', async (req, res) => {
 // @access   Public
 router.get('/', async (req, res) => {
   try {
-    const profiles = await Profile.find().populate('user', [
-      'firstName',
-      'lastName',
-      'avatar',
-    ]);
+    const profiles = await Profile.find()
+      .populate('user', ['firstName', 'lastName', 'avatar', 'createdAt'])
+      .populate('followers', ['firstName', 'lastName', 'avatar', 'createdAt'])
+      .populate('following', ['firstName', 'lastName', 'avatar', 'createdAt']);
     res.json(profiles);
   } catch (err) {
     console.error(err.message);

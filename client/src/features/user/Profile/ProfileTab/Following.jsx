@@ -118,7 +118,7 @@ const Following = ({ isCurrentUser }) => {
     </Fragment>
   );
   const joinDate = () => (
-    <span className={classes.joinDate} style={{}}>
+    <span className={classes.joinDate}>
       Jion Since: {moment(profile.user.createdAt).format('DD MMM YYYY')}
     </span>
   );

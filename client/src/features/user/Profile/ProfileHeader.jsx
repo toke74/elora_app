@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Avatar from '@material-ui/core/Avatar';
-import { Button } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,7 +55,6 @@ const ProfileHeader = ({
   const isCurrentUser = user && user._id === paramsId;
   let isFollowers = false;
 
-  
   profile &&
     user &&
     profile.followers.map((follower) => {
