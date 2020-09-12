@@ -8,11 +8,7 @@ import moment from 'moment';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
 import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
 import Button from '@material-ui/core/Button';
 
 //Local stuff
@@ -22,7 +18,7 @@ import { CardContent } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   profileCard: {
     width: '90%',
-    height: '150px',
+    height: '165px',
     marginBottom: theme.spacing(2),
     boxShadow:
       '0px 0px 1px -1px rgba(0,0,0,0.2), 0px 0px 1px 0px rgba(0,0,0,0.14), 0px 0px 3px 0px rgba(0,0,0,0.12)',
@@ -43,14 +39,14 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'Times New Roman',
     marginRight: theme.spacing(1),
     [theme.breakpoints.down('md')]: {
-      fontSize: '0.9rem',
+      fontSize: '0.8rem',
     },
   },
   joinDate: {
     color: '#b3bbc3',
     fontSize: '0.9rem',
     [theme.breakpoints.down('md')]: {
-      fontSize: '0.75rem',
+      fontSize: '0.7rem',
     },
   },
   profileBtn: {
@@ -58,6 +54,9 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     textTransform: 'capitalize',
     borderRadius: '25px',
+    [theme.breakpoints.down('md')]: {
+      fontSize: '0.7rem',
+    },
   },
   follow: {
     textDecoration: 'none',

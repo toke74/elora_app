@@ -119,7 +119,7 @@ const MobileMenu = ({
           </MenuItem>
         </a>
 
-        <a className={classes.link} href="/my-profile">
+        <a className={classes.link} href={`/profile/${user._id}`}>
           <MenuItem className={classes.menuItems}>
             <PersonIcon color="primary" style={{ marginRight: '50px' }} />
             <p>My Profile</p>
