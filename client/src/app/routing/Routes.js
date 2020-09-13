@@ -10,6 +10,8 @@ import ProfilePage from '../../features/user/Profile/ProfilePage';
 import FollowingPage from '../../features/user/Profile/FollowingPage';
 import FollowersPage from '../../features/user/Profile/FollowersPage';
 import ProfilesDashboard from '../../features/user/Profiles/ProfilesDashboard';
+import ResetPassword from '../../features/auth/ResetPassword';
+import NewPassword from '../../features/auth/NewPassword';
 
 const Routes = (props) => {
   return (
@@ -17,6 +19,8 @@ const Routes = (props) => {
       <Switch>
         <Route exact path="/register" component={Register} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/forgot-password" component={ResetPassword} />
+        <Route exact path="/forgot-password/:token" component={NewPassword} />
         <Route exact path="/" component={PostDashboard} />
         <Route exact path="/post-detail/:id" component={PostDetailedPage} />
         <Route exact path="/profile/:id" component={ProfilePage} />

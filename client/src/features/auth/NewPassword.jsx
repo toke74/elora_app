@@ -1,29 +1,27 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
-import TextInput from '../../app/common/form/TextInput';
-import { Button, makeStyles, Typography, Grid } from '@material-ui/core';
 import {
   combineValidators,
   isRequired,
-  createValidator,
   composeValidators,
+  matchesField,
 } from 'revalidate';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { login } from './authActions';
+import { Link, useParams } from 'react-router-dom';
 
-const isValidEmail = createValidator(
-  (message) => (value) => {
-    if (value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-      return message;
-    }
-  },
-  'Invalid email address'
-);
+//MUI stuff
+import { Button, makeStyles, Typography, Grid } from '@material-ui/core';
+
+//Local Stuff
+import { UpdateToNewPassword } from './authActions';
+import TextInput from '../../app/common/form/TextInput';
 
 const validate = combineValidators({
-  email: composeValidators(isRequired('Email'), isValidEmail)(),
   password: isRequired('Password'),
+  confirmPassword: composeValidators(
+    isRequired({ message: 'Please confirm your new password' }),
+    matchesField('password')({ message: 'Passwords do not match' })
+  )(),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -46,43 +44,48 @@ const useStyles = makeStyles((theme) => ({
     color: '#db2828',
     marginTop: 10,
   },
+  field: {
+    marginBottom: theme.spacing(2),
+  },
 }));
-const Login = ({ handleSubmit, history }) => {
+
+const NewPassword = ({ handleSubmit, history }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { token } = useParams();
+
   const errors = useSelector((state) => state.auth.errors);
 
   const onSubmitHandle = (values) => {
-    const email = values.email.toLowerCase();
     const value = {
-      email,
       password: values.password,
+      token,
     };
-    dispatch(login(value, history));
+    dispatch(UpdateToNewPassword(value, history));
   };
 
   return (
     <Grid className={classes.root} container justify="center">
       <Grid item xs={1} md={4} />
       <Grid item xs={10} md={4}>
-        <Typography className={classes.title}>Login to Elora</Typography>
+        <Typography className={classes.title}>Reset Passsword</Typography>
         <form onSubmit={handleSubmit(onSubmitHandle)} autoComplete="off">
-          <div>
-            <Field
-              id="email"
-              name="email"
-              component={TextInput}
-              label="Email"
-              fullWidth
-            />
-          </div>
           <div>
             <Field
               name="password"
               type="password"
               component={TextInput}
-              label="Password"
+              label="Enter a new password"
               id="password"
+              fullWidth
+            />
+          </div>
+          <div className={classes.field}>
+            <Field
+              name="confirmPassword"
+              type="password"
+              component={TextInput}
+              label="Confirm a new password"
               fullWidth
             />
           </div>
@@ -99,19 +102,9 @@ const Login = ({ handleSubmit, history }) => {
             color="primary"
             type="submit"
           >
-            Login
+            Update Password
           </Button>
         </form>
-        <p style={{ textAlign: 'center' }}>
-          Forgot password{' '}
-          <Link
-            style={{ textDecoration: 'none', color: '#2bbbff' }}
-            to="/forgot-password"
-          >
-            {' '}
-            click here{' '}
-          </Link>
-        </p>
       </Grid>
       <Grid item xs={1} md={4} />
     </Grid>
@@ -119,6 +112,6 @@ const Login = ({ handleSubmit, history }) => {
 };
 
 export default reduxForm({
-  form: 'login',
+  form: 'newPassword',
   validate,
-})(Login);
+})(NewPassword);

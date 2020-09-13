@@ -11,7 +11,14 @@ const User = require('../../models/User');
 const Profile = require('../../models/Profile');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
-// const api_key = config.get('api_key');
+
+const transporter = nodemailer.createTransport(
+  sendgridTransport({
+    auth: {
+      api_key: config.get('api_key'),
+    },
+  })
+);
 
 // @route    POST api/users
 // @desc     Register User
@@ -76,7 +83,14 @@ router.post(
 
       //then save the user in database
       await user.save();
-      console.log(user);
+
+      // transporter.sendMail({
+      //   to: user.email,
+      //   from: 'shalompc74@gmail.com',
+      //   subject: 'signup success',
+      //   html: '<h1>welcome to instagram</h1>',
+      // });
+
       /*
      4.Return jsonwebtoken
       */
@@ -184,27 +198,98 @@ router.post('/forgot-password', async (req, res) => {
       if (!user) {
         return res
           .status(422)
-          .json({ error: 'User dont exists with that email' });
+          .json({ error: "User don't exists with that email" });
       }
 
       user.resetToken = token;
       user.expireToken = Date.now() + 3600000;
       await user.save();
 
+      const message = ` <h4> Hi ${user.firstName} ${user.lastName}</h4>
+      <p>
+        You recently requested to reset your password for your Elora app
+        account, Click the Link below to reset it,
+      </p>
+      <p>
+      <a href="${config.get(
+        'email_reset_link'
+      )}/forgot-password/${token}"> Reset Password Link</a></p>
+      <p>
+        
+        If you did not requested a pssword reset, please ignore this email or
+        reply to let us know. This password reset is only valid for the next 60
+        minutes.
+      </p>
+
+      <p> Thanks,<br/>
+       Elora App Team</p>
+
+      <p>
+        P.S. We also love hearing from you and helping you with any issues you
+        have. Please reply to this email if you want to ask a question.
+      </p>
+
+      <p>
+        If you are having trouble clicking the password reset Link , copy and
+        paste the URL below into your web browser.
+        
+      </p>
+      <p>${config.get('email_reset_link')}/forgot-password/${token}</p>
+      `;
+
       transporter.sendMail({
         to: user.email,
-        from: 'no-replay@insta.com',
-        subject: 'password reset',
-        html: `
-                     <p>You requested for password reset</p>
-                     <h5>click in this <a href="http://localhost:5000/users/forgot-password/${token}">link</a> to reset password</h5>
-                     `,
+        from: 'shalompc74@gmail.com',
+        subject: 'Password reset',
+        html: message,
       });
       res.json({ message: 'check your email' });
     });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
+  }
+});
+
+// @route    POST api/users/change-password
+// @desc     Change  User Password
+// @access   Private
+router.post('/new-password', async (req, res) => {
+  const password = req.body.password;
+  const sentToke = req.body.token;
+
+  try {
+    /*See if user exist*/
+    let user = await User.findOne({
+      resetToken: sentToke,
+      expireToken: { $gt: Date.now() },
+    });
+    if (!user) {
+      return res.status(404).json({
+        errors: [{ msg: 'Try again session expired' }],
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (isMatch) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: 'Please enter another password' }] });
+    }
+
+    /*Encript password */
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(password, salt);
+    user.resetToken = undefined;
+    user.expireToken = undefined;
+    //then save the user in database
+    await user.save();
+    console.log(user);
+    res.json({ msg: 'Password successfully changed' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
   }
 });
 

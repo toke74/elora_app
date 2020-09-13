@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   registerBtn: {
     marginTop: theme.spacing(3),
+    textTransform: 'capitalize',
   },
   errors: {
     color: '#db2828',

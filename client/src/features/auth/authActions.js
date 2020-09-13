@@ -6,9 +6,9 @@ import {
   LOGOUT,
 } from './authConstants';
 import api from '../../app/common/util/api';
-// import { reset } from 'redux-form';
 import setAuthToken from '../../app/common/util/setAuthToken';
 import { reset } from 'redux-form';
+import { toastr } from 'react-redux-toastr';
 
 // Load User
 export const loadUser = () => async (dispatch) => {
@@ -95,6 +95,47 @@ export const changePassword = (values) => async (dispatch) => {
         payload: err.response.data.errors,
       });
       dispatch(reset('account'));
+    }
+  }
+};
+// Reset password
+export const ForgotPassword = (values, history) => async (dispatch) => {
+  try {
+    const res = await api.post('/users/forgot-password', values);
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
+    toastr.success('Check your email, for reset link');
+    history.push('/login');
+  } catch (err) {
+    if (err.response) {
+      console.log(err.response);
+      toastr.error(`${err.response.data.error}`);
+      dispatch({
+        type: AUTH_ERROR,
+        payload: err.response.data.errors,
+      });
+    }
+  }
+};
+
+// New password
+export const UpdateToNewPassword = (values, history) => async (dispatch) => {
+  try {
+    const res = await api.post('/users/new-password', values);
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data,
+    });
+    toastr.success('Password successfully Updated');
+    history.push('/login');
+  } catch (err) {
+    if (err.response) {
+      dispatch({
+        type: AUTH_ERROR,
+        payload: err.response.data.errors,
+      });
     }
   }
 };

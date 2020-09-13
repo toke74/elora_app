@@ -9,8 +9,7 @@ import {
   composeValidators,
 } from 'revalidate';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { login } from './authActions';
+import { ForgotPassword } from './authActions';
 
 const isValidEmail = createValidator(
   (message) => (value) => {
@@ -23,7 +22,6 @@ const isValidEmail = createValidator(
 
 const validate = combineValidators({
   email: composeValidators(isRequired('Email'), isValidEmail)(),
-  password: isRequired('Password'),
 });
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +45,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
   },
 }));
-const Login = ({ handleSubmit, history }) => {
+
+const ResetPassword = ({ handleSubmit, history }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const errors = useSelector((state) => state.auth.errors);
@@ -56,16 +55,15 @@ const Login = ({ handleSubmit, history }) => {
     const email = values.email.toLowerCase();
     const value = {
       email,
-      password: values.password,
     };
-    dispatch(login(value, history));
+    dispatch(ForgotPassword(value, history));
   };
 
   return (
     <Grid className={classes.root} container justify="center">
       <Grid item xs={1} md={4} />
       <Grid item xs={10} md={4}>
-        <Typography className={classes.title}>Login to Elora</Typography>
+        <Typography className={classes.title}>Reset password</Typography>
         <form onSubmit={handleSubmit(onSubmitHandle)} autoComplete="off">
           <div>
             <Field
@@ -76,16 +74,7 @@ const Login = ({ handleSubmit, history }) => {
               fullWidth
             />
           </div>
-          <div>
-            <Field
-              name="password"
-              type="password"
-              component={TextInput}
-              label="Password"
-              id="password"
-              fullWidth
-            />
-          </div>
+
           {errors &&
             errors.map((error, index) => (
               <div key={index} className={classes.errors}>
@@ -99,19 +88,9 @@ const Login = ({ handleSubmit, history }) => {
             color="primary"
             type="submit"
           >
-            Login
+            Reset Passowrd
           </Button>
         </form>
-        <p style={{ textAlign: 'center' }}>
-          Forgot password{' '}
-          <Link
-            style={{ textDecoration: 'none', color: '#2bbbff' }}
-            to="/forgot-password"
-          >
-            {' '}
-            click here{' '}
-          </Link>
-        </p>
       </Grid>
       <Grid item xs={1} md={4} />
     </Grid>
@@ -119,6 +98,6 @@ const Login = ({ handleSubmit, history }) => {
 };
 
 export default reduxForm({
-  form: 'login',
+  form: 'reset',
   validate,
-})(Login);
+})(ResetPassword);

@@ -4,6 +4,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 import { ThemeProvider } from '@material-ui/styles';
+import ReduxToastr from 'react-redux-toastr';
+import 'react-redux-toastr/lib/css/react-redux-toastr.min.css';
 
 //Local stuff
 import './index.css';
@@ -16,6 +18,11 @@ ReactDOM.render(
   <ThemeProvider theme={theme}>
     <Provider store={store}>
       <Router>
+        <ReduxToastr
+          position="top-center"
+          transitionIn="fadeIn"
+          transitionOut="fadeOut"
+        />
         <ScrollToTop />
         <App />
       </Router>
