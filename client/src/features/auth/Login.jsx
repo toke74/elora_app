@@ -103,7 +103,8 @@ const Login = ({ handleSubmit, history }) => {
           </Button>
         </form>
         <p style={{ textAlign: 'center' }}>
-          Forgot password{' '}
+          
+          Forgot password ?
           <Link
             style={{ textDecoration: 'none', color: '#2bbbff' }}
             to="/forgot-password"
